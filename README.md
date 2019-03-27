@@ -1,1 +1,1 @@
-# static_blog_encryptor
+# Hugo_encryptor
