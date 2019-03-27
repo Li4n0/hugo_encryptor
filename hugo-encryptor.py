@@ -6,36 +6,33 @@ from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 
 
-class DESCrypt(object):
+class AESCrypt(object):
     LEN = 16
     def __init__(self, key: str):
-        if len(key) > DESCrypt.LEN:
+        if len(key) > AESCrypt.LEN:
             raise ValueError('password too long')
 
-        self.key = key.encode().ljust(DESCrypt.LEN, b'\x00')
+        self.key = key.encode().ljust(AESCrypt.LEN, b'\x00')
         self.mode = AES.MODE_CBC
 
     def encrypt(self, text: bytes):
         cryptor = AES.new(self.key, self.mode, self.key)
-        padlen = DESCrypt.LEN - len(text) % DESCrypt.LEN
-
-        padlen = padlen if padlen != 0 else DESCrypt.LEN
-
-        for i in range(padlen):
-            text += chr(i+1).encode()
+        padlen = AESCrypt.LEN - len(text) % AESCrypt.LEN
+        padlen = padlen if padlen != 0 else AESCrypt.LEN
+        text += chr(padlen)*padlen
 
         return cryptor.encrypt(text)
 
 
 if __name__ == '__main__':
-    for dirpath, dirnames, filenames in os.walk('.'):
+    for dirpath, dirnames, filenames in os.walk('./public/post'):
         for filename in filenames:
             if not filename.lower().endswith('.html'):
                 continue
 
             fullpath = os.path.join(dirpath, filename)
 
-            soup = BeautifulSoup(open(fullpath), features="html5lib")
+            soup = BeautifulSoup(open(fullpath))
             block = soup.find('div', {'id': 'hugo-encryptor'})
 
             if block is None:
@@ -44,8 +41,8 @@ if __name__ == '__main__':
             else:
                 print(fullpath)
 
-                cryptor = DESCrypt(block['data-password'])
-                text = ''.join(map(str, block.contents)).encode()
+                cryptor = AESCrypt(block['data-password'])
+                text = ''.join(map(str, block.contents))
                 written = base64.b64encode(cryptor.encrypt(text))
 
                 del block['data-password']
