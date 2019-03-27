@@ -1,0 +1,11 @@
+该文章已被加密，请输入密码以查看。
+
+<!-- 以上内容出现在首页等可能出现 summary 的地方 -->
+
+<!--more-->
+
+<!-- 解密用的代码在这，正文里出现 -->
+
+<div id="hugo-encryptor" data-password="{{ .Get 0 }}">
+{{ .Inner }}
+</div>
