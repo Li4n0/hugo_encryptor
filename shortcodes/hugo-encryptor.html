@@ -13,37 +13,50 @@ your content
 */}}
 {{/* DEFAULTS */}}
 
-<p>文章被密码保护</p>
-<input id="hugo-encryptor-password" placeholder="请输入密码" />
-<button
-  onclick="hugoDecrypt(document.getElementById('hugo-encryptor-password').value)"
->
-  提交
-</button>
-
-<div id="hugo-encryptor" data-password="{{ .Get 0 }}" style="display:none;">
-  <p style="display:none;">The quick brown fox jumps over the lazy dog</p>
-  {{ .Inner }}
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-<script>
+<hugo-encryptor>
+  <p>以下内容被密码保护</p>
+  <input id="hugo-encryptor-password" placeholder="请输入密码" />
+  <input
+    type="button"
+    value="提交"
+    onclick="hugoDecrypt(document.getElementById('hugo-encryptor-password').value)"
+  />
+  <cipher-text data-password="{{ .Get 0 }}" style="display:none;">
+    <p id="verifyText" style="display:none;">
+      The quick brown fox jumps over the lazy dog
+    </p>
+    {{ .Inner }}
+  </cipher-text>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script>
     <!--
-  let encryptor = document.getElementById("hugo-encryptor");
-  const hugoDecrypt = function(password) {
-    let cipher_text = encryptor.innerText;
-    password = password.padEnd(16, "\0");
-    let key = CryptoJS.enc.Utf8.parse(password);
-    let decryptedData = CryptoJS.AES.decrypt(cipher_text, key, {
-      iv: key,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7
-    });
-    let decryptedStr = decryptedData.toString(CryptoJS.enc.Utf8);
-    if (decryptedStr.includes("The quick brown fox jumps over the lazy dog")) {
-      encryptor.parentElement.innerHTML = decryptedStr;
-    } else {
-      alert("密码错误！");
-    }
-  };
-  -->
-</script>
+      let cipher = document.getElementsByTagName("cipher-text")[0];
+      const hugoDecrypt = function(password) {
+        try {
+          let cipher_text = cipher.innerText;
+          password = password.padEnd(16, "\0");
+          let key = CryptoJS.enc.Utf8.parse(password);
+
+          let decryptedData = CryptoJS.AES.decrypt(cipher_text, key, {
+            iv: key,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+          });
+
+          let decryptedStr = decryptedData.toString(CryptoJS.enc.Utf8);
+          if (
+            decryptedStr.includes("The quick brown fox jumps over the lazy dog")
+          ) {
+            cipher.parentElement.outerHTML = decryptedStr;
+          } else {
+            alert("密码错误！");
+          }
+          document.getElementById("verifyText").outerHTML = "";
+        } catch (error) {
+          console.log(error);
+          alert("密码错误！");
+        }
+      };
+      -->
+  </script>
+</hugo-encryptor>
