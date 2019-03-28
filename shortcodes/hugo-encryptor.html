@@ -31,6 +31,7 @@ your content
   <script>
     let cipher = document.getElementsByTagName("cipher-text")[0];
     const storageKey = location.pathname + "password";
+    const userStorage = {{ if .Site.Params.hugoEncryptorStorage }} window['{{.Site.Params.hugoEncryptorStorage}}Storage'] {{ else }} localStorage {{ end }};
     /**
      * @name: decrypt
      * @description: decrypt cipher text by password
@@ -62,12 +63,12 @@ your content
           decrypted_text.includes("The quick brown fox jumps over the lazy dog")
         ) {
           cipher.parentElement.outerHTML = decrypted_text;
-          localStorage.setItem(storageKey, password);
+          userStorage.setItem(storageKey, password);
         } else {
           if (type === "input") {
             alert("密码错误！");
           } else if (type === "storage") {
-            localStorage.removeItem(storageKey);
+            userStorage.removeItem(storageKey);
           }
         }
         document.getElementById("verifyText").outerHTML = "";
@@ -76,15 +77,15 @@ your content
         if (type === "input") {
           alert("密码错误！");
         } else if (type === "storage") {
-          localStorage.removeItem(location.pathname + "password");
+          userStorage.removeItem(location.pathname + "password");
         }
       }
     };
   </script>
   <script>
     window.onload = () => {
-      if (localStorage.getItem(storageKey)) {
-        hugoDecrypt(localStorage.getItem(storageKey), "storage");
+      if (userStorage.getItem(storageKey)) {
+        hugoDecrypt(userStorage.getItem(storageKey), "storage");
       }
     };
   </script>
