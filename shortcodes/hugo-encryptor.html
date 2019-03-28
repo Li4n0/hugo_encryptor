@@ -19,7 +19,7 @@ your content
   <input
     type="button"
     value="提交"
-    onclick="hugoDecrypt(document.getElementById('hugo-encryptor-password').value)"
+    onclick="hugoDecrypt(document.getElementById('hugo-encryptor-password').value,'input')"
   />
   <cipher-text data-password="{{ .Get 0 }}" style="display:none;">
     <p id="verifyText" style="display:none;">
@@ -29,34 +29,63 @@ your content
   </cipher-text>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script>
-    <!--
-      let cipher = document.getElementsByTagName("cipher-text")[0];
-      const hugoDecrypt = function(password) {
-        try {
-          let cipher_text = cipher.innerText;
-          password = password.padEnd(16, "\0");
-          let key = CryptoJS.enc.Utf8.parse(password);
-
-          let decryptedData = CryptoJS.AES.decrypt(cipher_text, key, {
-            iv: key,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-          });
-
-          let decryptedStr = decryptedData.toString(CryptoJS.enc.Utf8);
-          if (
-            decryptedStr.includes("The quick brown fox jumps over the lazy dog")
-          ) {
-            cipher.parentElement.outerHTML = decryptedStr;
-          } else {
+    let cipher = document.getElementsByTagName("cipher-text")[0];
+    const storageKey = location.pathname + "password";
+    /**
+     * @name: decrypt
+     * @description: decrypt cipher text by password
+     * @param {String} cipher_text
+     * @param {String} password
+     * @return:{String} decryptedData
+     */
+    const decrypt = function(cipher_text, password) {
+      password = password.padEnd(16, "\0");
+      let key = CryptoJS.enc.Utf8.parse(password);
+      let decryptedData = CryptoJS.AES.decrypt(cipher_text, key, {
+        iv: key,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return decryptedData.toString(CryptoJS.enc.Utf8);
+    };
+    /**
+     * @name:hugoDecrypt
+     * @description: judge the password ,and decrypt post
+     * @param {String} password
+     * @param {String} type
+     */
+    const hugoDecrypt = function(password, type) {
+      try {
+        let cipher_text = cipher.innerText;
+        let decrypted_text = decrypt(cipher_text, password);
+        if (
+          decrypted_text.includes("The quick brown fox jumps over the lazy dog")
+        ) {
+          cipher.parentElement.outerHTML = decrypted_text;
+          localStorage.setItem(storageKey, password);
+        } else {
+          if (type === "input") {
             alert("密码错误！");
+          } else if (type === "storage") {
+            localStorage.removeItem(storageKey);
           }
-          document.getElementById("verifyText").outerHTML = "";
-        } catch (error) {
-          console.log(error);
-          alert("密码错误！");
         }
-      };
-      -->
+        document.getElementById("verifyText").outerHTML = "";
+      } catch (error) {
+        console.log(error);
+        if (type === "input") {
+          alert("密码错误！");
+        } else if (type === "storage") {
+          localStorage.removeItem(location.pathname + "password");
+        }
+      }
+    };
+  </script>
+  <script>
+    window.onload = () => {
+      if (localStorage.getItem(storageKey)) {
+        hugoDecrypt(localStorage.getItem(storageKey), "storage");
+      }
+    };
   </script>
 </hugo-encryptor>
