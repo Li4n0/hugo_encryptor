@@ -1,22 +1,20 @@
 # coding=utf-8
 import os
 import base64
+import hashlib
 
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 
 
 class AESCrypt(object):
-    LEN = 16
+    LEN = 32
     def __init__(self, key: str):
-        if len(key) > AESCrypt.LEN:
-            raise ValueError('password too long')
-
-        self.key = key.encode().ljust(AESCrypt.LEN, b'\x00')
+        self.key = key.encode()
         self.mode = AES.MODE_CBC
 
     def encrypt(self, text: bytes):
-        cryptor = AES.new(self.key, self.mode, self.key)
+        cryptor = AES.new(self.key, self.mode, self.key[16:])
         padlen = AESCrypt.LEN - len(text) % AESCrypt.LEN
         padlen = padlen if padlen != 0 else AESCrypt.LEN
         text += chr(padlen)*padlen
@@ -25,6 +23,7 @@ class AESCrypt(object):
 
 
 if __name__ == '__main__':
+    md5 = hashlib.md5()
     for dirpath, dirnames, filenames in os.walk('./public/post'):
         for filename in filenames:
             if not filename.lower().endswith('.html'):
@@ -32,16 +31,17 @@ if __name__ == '__main__':
 
             fullpath = os.path.join(dirpath, filename)
 
-            soup = BeautifulSoup(open(fullpath))
-            block = soup.find('div', {'id': 'hugo-encryptor'})
+            soup = BeautifulSoup(open(fullpath),'lxml')
+            block = soup.find('cipher-text')
 
             if block is None:
                 pass
 
             else:
                 print(fullpath)
-
-                cryptor = AESCrypt(block['data-password'])
+                md5.update(block['data-password'].encode('utf-8'))
+                key = md5.hexdigest()
+                cryptor = AESCrypt(key)
                 text = ''.join(map(str, block.contents))
                 written = base64.b64encode(cryptor.encrypt(text))
 
