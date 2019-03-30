@@ -4,8 +4,6 @@
 
 [中文文档](./README-zh_CN.md)
 
-[TOC]
-
 ## Installation
 
 Environmental dependence: Python3
@@ -89,11 +87,11 @@ For the difference of two storage ways:
 
 * **localStorage**:
 
-  Once a user input the correct password,the authorization status will not expire, the user can read the article at any time without having to enter the password again. Unless you change the password or the user clean his browser cache.
+  Once a reader input the correct password,the authorization status will not expire, the reader can read the article at any time without having to enter the password again. Unless you change the password or the reader clean his browser cache.
 
 * **sessionStorage**:
 
-  If a user input the correct password, he could read the article without having to enter the password again until the user close his browser.
+  If a reader input the correct password, he could read the article without having to enter the password again until the user close his browser.
 
 ### Style
 

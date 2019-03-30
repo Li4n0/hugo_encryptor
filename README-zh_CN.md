@@ -1,10 +1,8 @@
 # Hugo Encryptor
 
-**Hugo-Encryptor** 是一款能够帮助作者保护文章内容的工具。它使用 AES-256 来对文章的内容进行加密，并且通过在文章中嵌入内联 `JavaScript` 代码来验证用户输入的密码是否正确。没有正确的文章密码，读者将无法看到文章的加密内容。
+**Hugo-Encryptor** 是一款能够帮助作者保护文章内容的工具。它使用 AES-256 来对文章的内容进行加密，并且通过在文章中嵌入内联 `JavaScript` 代码来验证读者输入的密码是否正确。没有正确的文章密码，读者将无法看到文章的加密内容。
 
 [English Document](./README.md)
-
-[TOC]
 
 ## 安装
 
@@ -33,9 +31,9 @@ $ cp shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-e
 
 ## 使用方法
 
-**步骤一：使用 `hugo-encryptor`  shortcode 标签包裹你需要加密的内容 **
+**步骤一：使用 `hugo-encryptor`  shortcode 标签包裹你需要加密的内容**
 
-**注意:在`hugo-encryptor` shortcode 标签之前必须存在一段明文文字以及 \<!--more--\> 标签 **
+**注意:在`hugo-encryptor` shortcode 标签之前必须存在一段明文文字以及 \<!--more--\> 标签**
 
 ```markdown
 ---
