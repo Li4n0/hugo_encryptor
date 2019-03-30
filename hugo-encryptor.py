@@ -24,7 +24,7 @@ class AESCrypt(object):
 
 if __name__ == '__main__':
     md5 = hashlib.md5()
-    for dirpath, dirnames, filenames in os.walk('./public/post'):
+    for dirpath, dirnames, filenames in os.walk('./public'):
         for filename in filenames:
             if not filename.lower().endswith('.html'):
                 continue
