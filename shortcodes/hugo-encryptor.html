@@ -28,7 +28,7 @@ your content
     <input
       class="hugo-encryptor-button"
       type="button"
-      value='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}Submit{{ else }}提交{{ end }}'
+      value='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}submit{{ else }}提交{{ end }}'
       onclick="hugoDecrypt(CryptoJS.MD5(document.getElementById('hugo-encryptor-password').value).toString(),'input')"
     />
   </div>
