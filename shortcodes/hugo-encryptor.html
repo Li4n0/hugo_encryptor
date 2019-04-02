@@ -76,6 +76,7 @@ your content
           ) {
             cipher.parentElement.outerHTML = decrypted_text;
             userStorage.setItem(storageKey, password);
+            document.getElementById("verifyText").outerHTML = "";
           } else {
             if (type === "input") {
               alert('{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}wrong password{{ else }}密码错误{{ end }}');
@@ -83,7 +84,6 @@ your content
               userStorage.removeItem(storageKey);
             }
           }
-          document.getElementById("verifyText").outerHTML = "";
         } catch (error) {
           // console.log(error);
           if (type === "input") {

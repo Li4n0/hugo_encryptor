@@ -23,7 +23,6 @@ class AESCrypt(object):
 
 
 if __name__ == '__main__':
-    md5 = hashlib.md5()
     for dirpath, dirnames, filenames in os.walk('./public'):
         for filename in filenames:
             if not filename.lower().endswith('.html'):
@@ -39,6 +38,7 @@ if __name__ == '__main__':
 
             else:
                 print(fullpath)
+                md5 = hashlib.md5()
                 md5.update(block['data-password'].encode('utf-8'))
                 key = md5.hexdigest()
                 cryptor = AESCrypt(key)
