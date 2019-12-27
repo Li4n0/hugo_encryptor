@@ -17,7 +17,7 @@ Environmental dependence: Python3
 **Step 2: Place `hugo-encryptor.py` in the root directory of your blog.**
 
     $ cp hugo-encryptor.py /path/to/your/blog/hugo-encryptor.py
-		$ chmod +x /path/to/your/blog/hugo-encryptor.py
+    $ chmod +x /path/to/your/blog/hugo-encryptor.py
 
 **Step 3: Place `shortcodes/hugo-encryptor.html` in the shortcode directory of your blog:**
 
