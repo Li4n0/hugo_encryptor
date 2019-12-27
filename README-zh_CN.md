@@ -20,6 +20,7 @@ $ pip install -r requirements.txt
 
 ```
 $ cp hugo-encryptor.py /path/to/your/blog/hugo-encryptor.py
+$ chmod +x /path/to/your/blog/hugo-encryptor.py
 ```
 
 **步骤三：将`shortcodes/hugo-encryptor.html` 放入博客`shortcodes` 目录**
