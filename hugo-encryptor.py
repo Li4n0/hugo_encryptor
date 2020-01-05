@@ -50,3 +50,32 @@ if __name__ == '__main__':
 
                 with open(fullpath, 'w') as f:
                     f.write(str(soup))
+
+    xmlpath = './public/index.xml'
+
+    soup = BeautifulSoup(open(xmlpath),'xml')
+    descriptions = soup('description')
+
+    for description in descriptions:
+
+        if description.string is not None:
+            post = BeautifulSoup(description.string,'html.parser')
+            block = post.find('hugo-encryptor')
+
+            if block is None:
+                pass
+
+            else:      
+                language = block.find('p')
+
+                if language.string == 'The following content is password protected.':
+                    prompt = BeautifulSoup('<p><i>The following content is password protected. Please view it on the original website.</i></p>','html.parser')
+                
+                else:
+                    prompt = BeautifulSoup('<p><i>以下内容被密码保护。请前往原网站查看。</i></p>','html.parser')
+                
+                block.replace_with(prompt)
+                description.string.replace_with(str(post))
+
+    with open(xmlpath, 'w') as f:
+        f.write(str(soup))
