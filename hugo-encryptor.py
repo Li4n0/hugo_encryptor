@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
             fullpath = os.path.join(dirpath, filename)
 
-            soup = BeautifulSoup(open(fullpath),'lxml')
+            soup = BeautifulSoup(open(fullpath, 'rb'), 'lxml')
             block = soup.find('cipher-text')
 
             if block is None:
