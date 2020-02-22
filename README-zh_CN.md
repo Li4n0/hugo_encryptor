@@ -8,33 +8,29 @@
 
 环境依赖：Python3
 
-**步骤一：下载 Hugo-Encryptor 并安装其所需要的依赖库**
+### 步骤一：下载 Hugo-Encryptor 并安装其所需要的依赖库
 
-```
-$ git clone https://github.com/Li4n0/hugo_encryptor.git
-$ cd Hugo-Encryptor
-$ pip install -r requirements.txt
-```
+    $ git clone https://github.com/Li4n0/hugo_encryptor.git
+    $ cd hugo_encryptor
+    $ chmod +x hugo_encryptor.py
+    $ pip install -r requirements.txt
 
-**步骤二：将`hugo-encryptor.py` 放入博客根目录**
+### 步骤二：在博客根目录创建软链接(可选)
 
-```
-$ cp hugo-encryptor.py /path/to/your/blog/hugo-encryptor.py
-$ chmod +x /path/to/your/blog/hugo-encryptor.py
-```
+    $ mkdir -p /path/to/your/blog/layouts/shortcodes
+    $ ln -s /absolute/path/to/hugo_encryptor/shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-encryptor.html
 
-**步骤三：将`shortcodes/hugo-encryptor.html` 放入博客`shortcodes` 目录**
+### 步骤三：为 `shortcodes/hugo-encryptor.html` 创建软链接
 
-```
-$ mkdir -p /path/to/your/blog/layouts/shortcodes
-$ cp shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-encryptor.html
-```
+    $ mkdir -p /path/to/your/blog/layouts/shortcodes
+    $ ln -s /absolute/path/to/hugo_encryptor/shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-encryptor.html
+
 
 ## 使用方法
 
-**步骤一：使用 `hugo-encryptor`  shortcode 标签包裹你需要加密的内容**
+### 步骤一：使用 `hugo-encryptor` 标签包裹你需要加密的内容
 
-**注意:在`hugo-encryptor` shortcode 标签之前必须存在一段明文文字以及 \<!--more--\> 标签**
+**注意：在 `hugo-encryptor` 标签之前必须存在一段明文文字以及 `<!--more-->`**
 
 ```markdown
 ---
@@ -42,7 +38,9 @@ title: "这是一篇加密文章"
 ---
 
 **这里必须存在一些明文文字以及概要标签:**
+
 <!--more-->
+
 {{% hugo-encryptor "PASSWORD" %}}
 
 # 这里是你要加密的内容!
@@ -54,21 +52,14 @@ title: "这是一篇加密文章"
 {{% /hugo-encryptor %}}
 ```
 
-**步骤二：像之前一样生成你的网站**
+### 步骤二：像往常一样生成你的网站
 
-```
-$ hugo
-```
+    $ hugo
 
-**步骤三：进行加密**
+### 步骤三：进行加密
 
-```
-$ python hugo-encryptor.py
-```
+    $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
 
-在此之后所有需要加密的文章内容都被加密完成了！
-
-之后所有需要加密的文章内容都被加密完成了！
 
 ## 配置
 
