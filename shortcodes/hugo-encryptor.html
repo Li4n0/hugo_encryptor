@@ -14,92 +14,32 @@ your content
 */}}
 {{/* DEFAULTS */}}
 
-<hugo-encryptor>
-  {{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}
-  <p>The following content is password protected.</p>
-  {{ else }}
-  <p>以下内容被密码保护</p>
-  {{ end }}
-  <div class='hugo-encryptor-form'>
+<div class="hugo-encryptor-container">
+  <div class="hugo-encryptor-prompt">
+    {{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}
+      <p>Part of this article is encrypted with password:</p>
+    {{ else }}
+      <p>文章的部分内容被密码保护：</p>
+    {{ end }}
+  </div>
+  <div class="hugo-encryptor-form">
     <input
       class="hugo-encryptor-input"
-      id="hugo-encryptor-password"
       placeholder='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}Please input the password{{ else }}请输入密码{{ end }}'
     />
     <input
       class="hugo-encryptor-button"
       type="button"
-      value='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}submit{{ else }}提交{{ end }}'
-      onclick="hugoDecrypt(CryptoJS.MD5(document.getElementById('hugo-encryptor-password').value).toString(),'input')"
+      value='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}Click to verify{{ else }}点击验证{{ end }}'
+      onclick="_click_handler(this)"
     />
   </div>
-  <cipher-text data-password="{{ .Get 0 }}" style="display:none;">
-    <p id="verifyText" style="display:none;">
-      The quick brown fox jumps over the lazy dog
-    </p>
+  <div
+    class="hugo-encryptor-cipher-text"
+    data-password="{{ .Get 0 }}"
+    style="display: none;"
+  >
+    <span style="display: none;"">--- DON'T MODIFY THIS LINE ---</span>
     {{ .Inner }}
-  </cipher-text>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-  <script>
-      let cipher = document.getElementsByTagName("cipher-text")[0];
-      const storageKey = location.pathname + "password";
-      const userStorage = {{ if .Site.Params.hugoEncryptorStorage }} window['{{.Site.Params.hugoEncryptorStorage}}Storage'] {{ else }} localStorage {{ end }};
-      /**
-       * @name: decrypt
-       * @description: decrypt cipher text by password
-       * @param {String} cipher_text
-       * @param {String} password
-       * @return:{String} decryptedData
-       */
-      const decrypt = function(cipher_text, password) {
-        let key = CryptoJS.enc.Utf8.parse(password);
-        let iv = CryptoJS.enc.Utf8.parse(password.substr(16));
-
-        let decryptedData = CryptoJS.AES.decrypt(cipher_text, key, {
-          iv: iv,
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7
-        });
-        return decryptedData.toString(CryptoJS.enc.Utf8);
-      };
-      /**
-       * @name:hugoDecrypt
-       * @description: judge the password ,and decrypt post
-       * @param {String} password
-       * @param {String} type
-       */
-      const hugoDecrypt = function(password, type) {
-        try {
-          let cipher_text = cipher.innerText;
-          let decrypted_text = decrypt(cipher_text, password);
-          if (
-            decrypted_text.includes("The quick brown fox jumps over the lazy dog")
-          ) {
-            cipher.parentElement.outerHTML = decrypted_text;
-            userStorage.setItem(storageKey, password);
-            document.getElementById("verifyText").outerHTML = "";
-          } else {
-            if (type === "input") {
-              alert('{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}wrong password{{ else }}密码错误{{ end }}');
-            } else if (type === "storage") {
-              userStorage.removeItem(storageKey);
-            }
-          }
-        } catch (error) {
-          // console.log(error);
-          if (type === "input") {
-            alert('{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}wrong password{{ else }}密码错误{{ end }}');
-          } else if (type === "storage") {
-            userStorage.removeItem(location.pathname + "password");
-          }
-        }
-      };
-  </script>
-  <script>
-    window.onload = () => {
-      if (userStorage.getItem(storageKey)) {
-        hugoDecrypt(userStorage.getItem(storageKey), "storage");
-      }
-    };
-  </script>
-</hugo-encryptor>
+  </div>
+</div>

@@ -72,14 +72,7 @@ Though **Hugo-Encryptor** can run without any configurations, if you like, you c
 
 ```toml
 [params]
-
   hugoEncryptorLanguage = "zh-cn"     # within ["zh-cn", "zh-cn"]
-
-  hugoEncryptorStorage = "local"      # within ["local", "session"], for the way how hugo-encryptor stores verified passwords in the readers' browsers
-  # "local" for localStorage:
-  # -> The (hashed) password of the very article will be saved in the localStorage, which will never expire.
-  # "session" for sessionStorage:
-  # -> Similar to the localStorage one, but the readers will lose its (hashed) password after the browser closed.
 ```
 
 ### Style

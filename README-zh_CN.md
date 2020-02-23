@@ -75,28 +75,6 @@ title: "这是一篇加密文章"
   hugoEncryptorLanguage = "en-us" # or "zh-cn"
 ```
 
-### 客户端存储密码的方式
-
-默认情况下，**Hugo-Encryptor** 使用 `localStorage` 在客户端存储文章密码的 md5 值。通过在博客的配置文件添加`hugoEncryptorStorage` 参数。你可以将储存方式更改为 `sessionStorage` ，就像下面这样：
-
-```toml
-[params]
- 		 ......
-  hugoEncryptorStorage = "session" # or "local"
-```
-
-关于两种存储方式的差别:
-
-- **localStorage**:
-
-  一旦一个读者输入了正确的密码，文章的认证状态将不会过期，该用户可以在任何时间阅读这篇文章，而无需再次输入密码。除非你更改了文章的密码，或者用户清空了浏览器缓存。
-
-- **sessionStorage**:
-
-  如果一个读者输入了正确的密码，那么在他关闭浏览器之前，他可以阅读这篇文章，而无需再次输入密码
-
-  
-
 ### 样式
 
 在默认情况下，**Hugo-Encryptor** 没有任何样式，但是我们为每一个可见元素都提供了类名，方便用户自己在 css 文件中为他们添加样式
