@@ -53,7 +53,12 @@ if __name__ == '__main__':
 
     xmlpath = './public/index.xml'
 
-    soup = BeautifulSoup(open(xmlpath),'xml')
+    try:
+        soup = BeautifulSoup(open(xmlpath, 'rb'), 'xml')
+    except FileNotFoundError:
+        print("Feed not found, ignored. (It should be placed in ./public/index.xml)")
+        exit(0)  # It's not a serious problem, just exit normally.
+
     descriptions = soup('description')
 
     for description in descriptions:
