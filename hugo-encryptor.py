@@ -51,36 +51,36 @@ if __name__ == '__main__':
                 with open(fullpath, 'w') as f:
                     f.write(str(soup))
 
-    xmlpath = './public/index.xml'
+    for xmlpath in ['public/index.xml', 'public/rss.xml', 'public/feed.xml']:
+        try:
+            soup = BeautifulSoup(open(xmlpath, 'rb'), 'xml')
+        except FileNotFoundError:
+            continue
 
-    try:
-        soup = BeautifulSoup(open(xmlpath, 'rb'), 'xml')
-    except FileNotFoundError:
-        print("Feed not found, ignored. (It should be placed in ./public/index.xml)")
-        exit(0)  # It's not a serious problem, just exit normally.
+        print(xmlpath)
 
-    descriptions = soup('description')
+        descriptions = soup('description')
 
-    for description in descriptions:
+        for description in descriptions:
 
-        if description.string is not None:
-            post = BeautifulSoup(description.string,'html.parser')
-            block = post.find('hugo-encryptor')
+            if description.string is not None:
+                post = BeautifulSoup(description.string,'html.parser')
+                block = post.find('hugo-encryptor')
 
-            if block is None:
-                pass
+                if block is None:
+                    pass
 
-            else:      
-                language = block.find('p')
+                else:      
+                    language = block.find('p')
 
-                if language.string == 'The following content is password protected.':
-                    prompt = BeautifulSoup('<p><i>The following content is password protected. Please view it on the original website.</i></p>','html.parser')
-                
-                else:
-                    prompt = BeautifulSoup('<p><i>以下内容被密码保护。请前往原网站查看。</i></p>','html.parser')
-                
-                block.replace_with(prompt)
-                description.string.replace_with(str(post))
+                    if language.string == 'The following content is password protected.':
+                        prompt = BeautifulSoup('<p><i>The following content is password protected. Please view it on the original website.</i></p>','html.parser')
+                    
+                    else:
+                        prompt = BeautifulSoup('<p><i>以下内容被密码保护。请前往原网站查看。</i></p>','html.parser')
+                    
+                    block.replace_with(prompt)
+                    description.string.replace_with(str(post))
 
-    with open(xmlpath, 'w') as f:
-        f.write(str(soup))
+        with open(xmlpath, 'w') as f:
+            f.write(str(soup))
