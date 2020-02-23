@@ -154,8 +154,8 @@ window.onload = () => {
                 else:      
                     language = block.find('p')
 
-                    if language.string == 'The following content is password protected.':
-                        prompt = BeautifulSoup('<p><i>The following content is password protected. Please view it on the original website.</i></p>','html.parser')
+                    if language.string == 'Part of this article is encrypted with password:':
+                        prompt = BeautifulSoup('<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
                     
                     else:
                         prompt = BeautifulSoup('<p><i>以下内容被密码保护。请前往原网站查看。</i></p>','html.parser')
