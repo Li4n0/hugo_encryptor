@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
             if len(blocks):
                 soup.body.append(soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
-                script_tag = soup.new_tag("script");
+                script_tag = soup.new_tag("script")
                 script_tag.string = """
 const _do_decrypt = function(encrypted, password) {
   let key = CryptoJS.enc.Utf8.parse(password);
