@@ -59,6 +59,8 @@ It may be something like:
 
     $ hugo
 
+> Notice: You may remove the `public/` directory before re-generate it, see [#15](https://github.com/Li4n0/hugo_encryptor/issues/15#issuecomment-826044272) for details.
+
 ### Step 3: Get the encryption done!
 
     $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
