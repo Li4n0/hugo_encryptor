@@ -56,6 +56,8 @@ title: "这是一篇加密文章"
 
     $ hugo
 
+> 注意：在重新生成之前请先将你的 `public/` 删除，详见 [#15](https://github.com/Li4n0/hugo_encryptor/issues/15#issuecomment-826044272)。
+
 ### 步骤三：进行加密
 
     $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
