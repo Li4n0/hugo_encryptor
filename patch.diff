@@ -1,0 +1,33 @@
+From 4f909263a93926c9e64038656219a2901adaa9a3 Mon Sep 17 00:00:00 2001
+From: sieveLau <43494245+sieveLau@users.noreply.github.com>
+Date: Sun, 2 May 2021 11:53:23 +0000
+Subject: [PATCH] fix 'gbk' codec problem on windows
+
+add encoding='utf-8' to line 131 and 166
+---
+ hugo-encryptor.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hugo-encryptor.py b/hugo-encryptor.py
+index 85949d9..be4cad2 100755
+--- a/hugo-encryptor.py
++++ b/hugo-encryptor.py
+@@ -128,7 +128,7 @@ window.onload = () => {
+ };"""
+                 soup.body.append(script_tag)
+ 
+-            with open(fullpath, 'w') as f:
++            with open(fullpath, 'w', encoding='utf-8') as f:
+                 html = str(soup)
+                 f.write(str(soup))
+ 
+@@ -163,5 +163,5 @@ window.onload = () => {
+                     block.replace_with(prompt)
+                     description.string.replace_with(str(post))
+ 
+-        with open(xmlpath, 'w') as f:
++        with open(xmlpath, 'w', encoding='utf-8') as f:
+             f.write(str(soup))
+-- 
+2.30.0.windows.1
+
