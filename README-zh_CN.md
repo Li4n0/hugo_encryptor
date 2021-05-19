@@ -2,7 +2,7 @@
 
 **Hugo-Encryptor** 是一款能够帮助作者保护文章内容的工具。它使用 AES-256 来对文章的内容进行加密，并且通过在文章中嵌入内联 `JavaScript` 代码来验证读者输入的密码是否正确。没有正确的文章密码，读者将无法看到文章的加密内容。
 
-[English Document](./README.md) [效果演示](https://blog.0e1.top/post/2019/03/this-is-hugo-encryptor/)
+[English Document](./README.md) [效果演示](https://0n0.fun/post/2019/03/this-is-hugo-encryptor/)
 
 ## 安装
 
