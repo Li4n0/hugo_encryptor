@@ -128,7 +128,7 @@ window.onload = () => {
 };"""
                 soup.body.append(script_tag)
 
-            with open(fullpath, 'w') as f:
+            with open(fullpath, 'w', encoding='utf-8') as f:
                 html = str(soup)
                 f.write(str(soup))
 
@@ -163,5 +163,5 @@ window.onload = () => {
                     block.replace_with(prompt)
                     description.string.replace_with(str(post))
 
-        with open(xmlpath, 'w') as f:
+        with open(xmlpath, 'w', encoding='utf-8') as f:
             f.write(str(soup))
