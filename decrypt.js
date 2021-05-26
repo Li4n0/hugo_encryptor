@@ -1,13 +1,17 @@
 const _do_decrypt = function (encrypted, password) {
-    let key = CryptoJS.enc.Utf8.parse(password);
-    let iv = CryptoJS.enc.Utf8.parse(password.substr(16));
+    let md5 = forge.md5.create();
+    let key = md5.update(password).digest();
+    
+    let parts = encrypted.split('||');
+    let iv = forge.util.decode64(parts[0]);
+    let mac = forge.util.decode64(parts[1]);
+    let encoded_content = forge.util.decode64(parts[2]);
 
-    let decrypted_data = CryptoJS.AES.decrypt(encrypted, key, {
-        iv: iv,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    return decrypted_data.toString(CryptoJS.enc.Utf8);
+    let dec = forge.cipher.createDecipher('AES-GCM',key);
+    dec.start({iv:iv, tag: mac});
+    dec.update(forge.util.createBuffer(encoded_content));
+    dec.finish();
+    return forge.util.decodeUtf8(dec.output.data);
 };
 
 const _click_handler = function (element) {
@@ -15,8 +19,7 @@ const _click_handler = function (element) {
     let encrypted = parent.querySelector(
         ".hugo-encryptor-cipher-text").innerText;
     let password = parent.querySelector(
-        ".hugo-encryptor-input").value;
-    password = CryptoJS.MD5(password).toString();
+        ".hugo-encryptor-input").value
 
     let index = -1;
     let elements = document.querySelectorAll(
