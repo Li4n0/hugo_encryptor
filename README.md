@@ -20,7 +20,7 @@ Environmental dependence: Python3
 
 ### Step 2: Create a symlink (Optional)
 
-    $ ln -s /absolute/path/to/hugo_encryptor/hugo_encryptor.py hugo_encryptor.py
+    $ ln -s /absolute/path/to/hugo_encryptor/hugo-encryptor.py hugo-encryptor.py
 
 ### Step 3: Symlink `shortcodes/hugo-encryptor.html` into the shortcode directory of your blog:
 
@@ -65,7 +65,7 @@ It may be something like:
 
 ### Step 3: Get the encryption done!
 
-    $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
+    $ python /absolute/path/to/hugo_encryptor/hugo-encryptor.py
 
 Then all the private posts in your `public` directory would be encrypted thoroughly, congrats!
 
