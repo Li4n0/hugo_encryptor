@@ -2,7 +2,9 @@
 
 **Hugo-Encryptor** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
 
-[中文文档](./README-zh_CN.md) [DEMO](https://0n0.fun/post/2019/03/this-is-hugo-encryptor/)
+[中文文档](./README-zh_CN.md) 
+
+[DEMO](https://0n0.fun/post/2019/03/this-is-hugo-encryptor/)
 
 
 ## Installation
@@ -13,12 +15,12 @@ Environmental dependence: Python3
 
     $ git clone https://github.com/Li4n0/hugo_encryptor.git
     $ cd hugo_encryptor
-    $ chmod +x hugo_encryptor.py
+    $ chmod +x hugo-encryptor.py
     $ pip install -r requirements.txt
 
 ### Step 2: Create a symlink (Optional)
 
-    $ ln -s /absolute/path/to/hugo_encryptor/hugo_encryptor.py hugo_encryptor.py
+    $ ln -s /absolute/path/to/hugo_encryptor/hugo-encryptor.py hugo-encryptor.py
 
 ### Step 3: Symlink `shortcodes/hugo-encryptor.html` into the shortcode directory of your blog:
 
@@ -63,7 +65,7 @@ It may be something like:
 
 ### Step 3: Get the encryption done!
 
-    $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
+    $ python /absolute/path/to/hugo_encryptor/hugo-encryptor.py
 
 Then all the private posts in your `public` directory would be encrypted thoroughly, congrats!
 
