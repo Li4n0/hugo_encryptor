@@ -5,21 +5,64 @@ import hashlib
 
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+
+
+def KEY_SIZE(): return 16
+def NONCE_SIZE(): return 12
+def MAC_SIZE(): return 16
+
+# cipher: aes-128-gcm
+# what is needed to share between encrypt and decrypt:
+#- 16 bytes key, use md5 on plaintext to gen
+#- 12 bytes nonce, randomly generate
+#- 16 bytes mac(tag), generate by encryptor
 
 
 class AESCrypt(object):
-    LEN = 32
-    def __init__(self, key: str):
-        self.key = key.encode()
-        self.mode = AES.MODE_CBC
+    def __init__(self, key: bytes, nonce: bytes):
+        """
+
+        create an aes-128-gcm object for encryption
+
+        :param key: the key used for encryption
+        :type key: 16 bytes
+        :param nonce: also known as **IV** in other ciphers
+        :type nonce: 12 bytes
+        :return: a AESCrypt object with key, nonce and mode set
+        :rtype: AESCrypt
+        """
+        if len(key) != KEY_SIZE():
+            raise RuntimeError('key length must be 16 bytes')
+        if len(nonce) != NONCE_SIZE():
+            raise RuntimeError('nonce length must be 12 bytes')
+        self.key = key
+        self.mode = AES.MODE_GCM
+        self.nonce = nonce
 
     def encrypt(self, text: bytes):
-        cryptor = AES.new(self.key, self.mode, self.key[16:])
-        padlen = AESCrypt.LEN - len(text) % AESCrypt.LEN
-        padlen = padlen if padlen != 0 else AESCrypt.LEN
-        text += (chr(padlen)*padlen).encode('utf8')
+        """
 
-        return cryptor.encrypt(text)
+        perform the encryption, MAC is set to 16 bytes
+
+        :param text: text needed to encrypt
+        :type text: bytes
+        :return: encrypted text and mac
+        :rtype: tuple[bytes,bytes]
+        """
+        cryptor = AES.new(self.key, self.mode, nonce=self.nonce, mac_len=MAC_SIZE())
+        return cryptor.encrypt_and_digest(text)
+
+
+def nonce_gen():
+    """
+
+    generate a random nonce for gcm encryption
+
+    :return: 12 bytes nonce
+    :rtype: bytes
+    """
+    return get_random_bytes(NONCE_SIZE())
 
 
 if __name__ == '__main__':
@@ -40,16 +83,21 @@ if __name__ == '__main__':
             for block in blocks:
                 md5 = hashlib.md5()
                 md5.update(block['data-password'].encode('utf-8'))
-                key = md5.hexdigest()
-                cryptor = AESCrypt(key)
+                key = md5.digest()
+                nonce = nonce_gen()
+                cryptor = AESCrypt(key, nonce)
                 text = ''.join(map(str, block.contents))
-                written = base64.b64encode(cryptor.encrypt(text.encode('utf8')))
+                enc_text, enc_tag = cryptor.encrypt(text.encode('utf8'))
+                # using || to seperate different part, because base64 has padding
+                written = base64.b64encode(nonce) + b'||' + base64.b64encode(enc_tag) + b'||' + base64.b64encode(enc_text)
 
                 del block['data-password']
+                # bytes.decode, make it a string
+                # has nothing to do with base64 or utf8
                 block.string = written.decode()
 
             if len(blocks):
-                soup.body.append(soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
+                soup.body.append(soup.new_tag("script", src="https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js"))
                 script_tag = soup.new_tag("script", src="/decrypt.js")
                 
                 soup.body.append(script_tag)
