@@ -17,8 +17,7 @@
 
 ### 步骤二：在博客根目录创建软链接(可选)
 
-    $ mkdir -p /path/to/your/blog/layouts/shortcodes
-    $ ln -s /absolute/path/to/hugo_encryptor/shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-encryptor.html
+    $ ln -s /absolute/path/to/hugo_encryptor/hugo-encryptor.py hugo-encryptor.py
 
 ### 步骤三：为 `shortcodes/hugo-encryptor.html` 创建软链接
 
